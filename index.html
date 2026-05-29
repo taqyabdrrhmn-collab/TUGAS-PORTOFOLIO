@@ -1,0 +1,838 @@
+
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Muhammad Taqy — Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #050505;
+    --dark-gray: #1C1C1C;
+    --soft-gray: #6E6E6E;
+    --light-gray: #BDBDBD;
+    --off-white: #F2F2F2;
+    --accent: #F2F2F2;
+    --accent-dim: rgba(242,242,242,0.08);
+  }
+ 
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+ 
+  html { scroll-behavior: smooth; }
+ 
+  body {
+    background: var(--black);
+    color: var(--off-white);
+    font-family: 'Syne', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+ 
+  /* ── CURSOR ── */
+  .cursor {
+    width: 10px; height: 10px;
+    background: var(--off-white);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%,-50%);
+    transition: transform 0.08s, width 0.3s, height 0.3s, background 0.3s;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(242,242,242,0.4);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 9998;
+    transform: translate(-50%,-50%);
+    transition: transform 0.18s ease, width 0.3s, height 0.3s, border-color 0.3s;
+  }
+  body:has(a:hover) .cursor-ring,
+  body:has(button:hover) .cursor-ring { width: 56px; height: 56px; border-color: var(--off-white); }
+ 
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 28px 60px;
+    mix-blend-mode: normal;
+  }
+  nav::after {
+    content: '';
+    position: absolute; bottom: 0; left: 60px; right: 60px;
+    height: 1px; background: rgba(242,242,242,0.06);
+  }
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 0.1em;
+    color: var(--off-white);
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 40px; list-style: none; }
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--soft-gray);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--off-white); }
+ 
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 60px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+ 
+  .hero-bg-text {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(120px, 22vw, 340px);
+    color: rgba(242,242,242,0.025);
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+    letter-spacing: -0.02em;
+    animation: drift 20s ease-in-out infinite alternate;
+  }
+  @keyframes drift {
+    from { transform: translate(-50%,-50%) translateX(-20px); }
+    to   { transform: translate(-50%,-50%) translateX(20px); }
+  }
+ 
+  .hero-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.25em;
+    color: var(--soft-gray);
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    opacity: 0; animation: fadeUp 1s 0.2s forwards;
+  }
+ 
+  .hero-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(68px, 12vw, 180px);
+    line-height: 0.9;
+    letter-spacing: -0.01em;
+    color: var(--off-white);
+    opacity: 0; animation: fadeUp 1s 0.4s forwards;
+  }
+ 
+  .hero-name span { color: var(--soft-gray); }
+ 
+  .hero-bottom {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-top: 48px;
+    opacity: 0; animation: fadeUp 1s 0.7s forwards;
+  }
+ 
+  .hero-desc {
+    max-width: 360px;
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: var(--soft-gray);
+    font-weight: 400;
+  }
+ 
+  .hero-scroll {
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--soft-gray);
+    text-transform: uppercase;
+  }
+  .scroll-line {
+    width: 1px; height: 60px;
+    background: linear-gradient(to bottom, var(--soft-gray), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse {
+    0%,100% { opacity: 0.4; transform: scaleY(1); }
+    50%      { opacity: 1; transform: scaleY(0.6); transform-origin: top; }
+  }
+ 
+  .side-socials {
+    position: absolute; left: 60px; bottom: 80px;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .side-socials a {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    color: var(--soft-gray);
+    text-decoration: none;
+    text-transform: uppercase;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    transition: color 0.3s;
+  }
+  .side-socials a:hover { color: var(--off-white); }
+ 
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+ 
+  /* ── DIVIDER ── */
+  .section-divider {
+    width: 100%; height: 1px;
+    background: linear-gradient(to right, transparent, rgba(242,242,242,0.08), transparent);
+    margin: 0 0;
+  }
+ 
+  /* ── ABOUT ── */
+  #about {
+    padding: 120px 60px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+ 
+  .section-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    color: var(--soft-gray);
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .section-tag::before {
+    content: '';
+    display: block;
+    width: 28px; height: 1px;
+    background: var(--soft-gray);
+  }
+ 
+  .section-heading {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 7vw, 100px);
+    line-height: 0.95;
+    color: var(--off-white);
+    letter-spacing: -0.01em;
+    margin-bottom: 32px;
+  }
+ 
+  .about-text {
+    font-size: 0.92rem;
+    line-height: 1.9;
+    color: var(--soft-gray);
+  }
+  .about-text strong { color: var(--light-gray); font-weight: 600; }
+ 
+  .about-card {
+    background: var(--dark-gray);
+    border: 1px solid rgba(242,242,242,0.06);
+    border-radius: 4px;
+    padding: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .about-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(242,242,242,0.2), transparent);
+  }
+  .about-card-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--soft-gray);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .about-card-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.4rem;
+    color: var(--off-white);
+    letter-spacing: 0.04em;
+    margin-bottom: 6px;
+  }
+  .about-cards { display: flex; flex-direction: column; gap: 20px; }
+ 
+  /* ── SKILLS ── */
+  #skills {
+    padding: 120px 60px;
+    background: var(--dark-gray);
+  }
+ 
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    margin-top: 64px;
+  }
+ 
+  .skill-cell {
+    background: var(--black);
+    padding: 48px 40px;
+    border: 1px solid rgba(242,242,242,0.04);
+    transition: background 0.4s, border-color 0.4s;
+    position: relative;
+    overflow: hidden;
+  }
+  .skill-cell::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--off-white);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+  .skill-cell:hover { background: #0e0e0e; border-color: rgba(242,242,242,0.12); }
+  .skill-cell:hover::after { transform: scaleX(1); }
+ 
+  .skill-icon {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    display: block;
+  }
+  .skill-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--off-white);
+    margin-bottom: 10px;
+    letter-spacing: 0.02em;
+  }
+  .skill-desc {
+    font-size: 0.82rem;
+    color: var(--soft-gray);
+    line-height: 1.6;
+  }
+ 
+  /* ── EXPERTISE ── */
+  #expertise { padding: 120px 60px; }
+ 
+  .expertise-list { margin-top: 64px; }
+ 
+  .expertise-item {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    align-items: center;
+    gap: 40px;
+    padding: 36px 0;
+    border-bottom: 1px solid rgba(242,242,242,0.06);
+    cursor: default;
+    transition: padding 0.3s;
+    position: relative;
+  }
+  .expertise-item:first-child { border-top: 1px solid rgba(242,242,242,0.06); }
+  .expertise-item:hover { padding-left: 20px; }
+ 
+  .exp-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--soft-gray);
+    letter-spacing: 0.1em;
+  }
+  .exp-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(28px, 4vw, 52px);
+    color: var(--light-gray);
+    letter-spacing: 0.02em;
+    transition: color 0.3s;
+  }
+  .expertise-item:hover .exp-title { color: var(--off-white); }
+  .exp-arrow {
+    font-size: 1.4rem;
+    color: var(--soft-gray);
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: opacity 0.3s, transform 0.3s;
+  }
+  .expertise-item:hover .exp-arrow { opacity: 1; transform: translateX(0); }
+ 
+  /* ── PORTFOLIO SECTION ── */
+  #portfolio { padding: 120px 60px; background: var(--dark-gray); }
+ 
+  .portfolio-header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 64px;
+  }
+  .portfolio-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    color: var(--soft-gray);
+    text-decoration: none;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(110,110,110,0.4);
+    padding-bottom: 4px;
+    transition: color 0.3s, border-color 0.3s;
+  }
+  .portfolio-link:hover { color: var(--off-white); border-color: var(--off-white); }
+ 
+  .portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+ 
+  .portfolio-card {
+    background: var(--black);
+    border: 1px solid rgba(242,242,242,0.04);
+    padding: 48px 40px;
+    position: relative;
+    overflow: hidden;
+    min-height: 280px;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    transition: border-color 0.4s;
+  }
+  .portfolio-card:hover { border-color: rgba(242,242,242,0.15); }
+  .portfolio-card-bg {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 6rem;
+    opacity: 0.04;
+    transition: opacity 0.4s, transform 0.4s;
+  }
+  .portfolio-card:hover .portfolio-card-bg { opacity: 0.08; transform: scale(1.1); }
+ 
+  .pc-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--soft-gray);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .pc-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--off-white);
+    margin-bottom: 10px;
+  }
+  .pc-desc {
+    font-size: 0.8rem;
+    color: var(--soft-gray);
+    line-height: 1.6;
+  }
+ 
+  /* ── CONTACT ── */
+  #contact { padding: 120px 60px; }
+ 
+  .contact-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+ 
+  .contact-left .section-heading { margin-bottom: 24px; }
+  .contact-text {
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: var(--soft-gray);
+    margin-bottom: 40px;
+  }
+ 
+  .contact-info { display: flex; flex-direction: column; gap: 20px; }
+  .ci-row {
+    display: flex; flex-direction: column; gap: 4px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(242,242,242,0.06);
+  }
+  .ci-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--soft-gray);
+    text-transform: uppercase;
+  }
+  .ci-value {
+    font-size: 0.92rem;
+    color: var(--light-gray);
+    font-weight: 500;
+  }
+ 
+  .contact-form { display: flex; flex-direction: column; gap: 20px; }
+ 
+  .form-group { display: flex; flex-direction: column; gap: 8px; }
+  .form-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    color: var(--soft-gray);
+    text-transform: uppercase;
+  }
+  .form-input, .form-textarea {
+    background: var(--dark-gray);
+    border: 1px solid rgba(242,242,242,0.08);
+    color: var(--off-white);
+    font-family: 'Syne', sans-serif;
+    font-size: 0.9rem;
+    padding: 16px 20px;
+    outline: none;
+    border-radius: 2px;
+    transition: border-color 0.3s;
+    resize: none;
+  }
+  .form-input:focus, .form-textarea:focus { border-color: rgba(242,242,242,0.3); }
+  .form-textarea { height: 140px; }
+ 
+  .btn-send {
+    background: var(--off-white);
+    color: var(--black);
+    border: none;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 18px 40px;
+    cursor: none;
+    transition: background 0.3s, transform 0.2s;
+    align-self: flex-start;
+  }
+  .btn-send:hover { background: var(--light-gray); transform: translateY(-2px); }
+ 
+  /* ── FOOTER ── */
+  footer {
+    padding: 40px 60px;
+    border-top: 1px solid rgba(242,242,242,0.06);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-copy {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--soft-gray);
+    letter-spacing: 0.12em;
+  }
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    color: var(--soft-gray);
+    letter-spacing: 0.1em;
+  }
+ 
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.02;
+    pointer-events: none;
+    z-index: 1000;
+  }
+ 
+  /* ── REVEAL ANIMATIONS ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+ 
+  /* ── MOBILE ── */
+  @media (max-width: 768px) {
+    nav { padding: 20px 24px; }
+    #hero { padding: 0 24px 60px; }
+    .side-socials { display: none; }
+    #about { grid-template-columns: 1fr; padding: 80px 24px; gap: 40px; }
+    #skills { padding: 80px 24px; }
+    .skills-grid { grid-template-columns: 1fr; }
+    #expertise { padding: 80px 24px; }
+    .expertise-item { grid-template-columns: 60px 1fr auto; gap: 20px; }
+    #portfolio { padding: 80px 24px; }
+    .portfolio-grid { grid-template-columns: 1fr; }
+    .portfolio-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+    #contact { padding: 80px 24px; }
+    .contact-inner { grid-template-columns: 1fr; gap: 40px; }
+    footer { padding: 28px 24px; flex-direction: column; gap: 12px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+ 
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+ 
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="logo">MT.</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#expertise">Expertise</a></li>
+    <li><a href="#portfolio">Work</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+ 
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-text">DESIGN</div>
+  <div class="side-socials">
+    <a href="#"></a>
+    <a href="#"></a>
+    <a href="#"></a>
+  </div>
+  <p class="hero-label">UI/UX · Graphic Design · Illustration</p>
+  <h1 class="hero-name">
+    MUHAMMAD<br>
+    <span>TAQY</span>
+  </h1>
+  <div class="hero-bottom">
+    <p class="hero-desc">
+      Siswa desainer dari Bogor yang mengeksplorasi estetika modern dan minimalis melalui visual yang berdampak dan karakter yang kuat.
+    </p>
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      Scroll
+    </div>
+  </div>
+</section>
+ 
+<div class="section-divider"></div>
+ 
+<!-- ABOUT -->
+<section id="about">
+  <div class="reveal">
+    <p class="section-tag">01 — About</p>
+    <h2 class="section-heading">SIAPA<br>SAYA</h2>
+    <p class="about-text">
+      Perkenalkan, nama saya <strong>Muhammad Taqy Abdurrahman Khirom</strong>. Saya berasal dari <strong>Bogor, Padasuka Ciomas</strong> — seorang siswa <strong>SMK TI BAZMA Bogor</strong> yang memiliki minat mendalam di bidang desain grafis dan visual.<br><br>
+      Saya percaya bahwa desain yang baik bukan hanya soal estetika — tapi tentang bagaimana sebuah pesan disampaikan dengan tepat, bersih, dan berkesan. Saya terus belajar dan mengasah kemampuan untuk menciptakan karya visual yang bermakna.
+    </p>
+  </div>
+  <div class="about-cards reveal">
+    <div class="about-card">
+      <p class="about-card-label">Institusi</p>
+      <p class="about-card-value">SMK TI<br>BAZMA</p>
+    </div>
+    <div class="about-card">
+      <p class="about-card-label">Domisili</p>
+      <p class="about-card-value" style="font-size:1.6rem;">Padasuka Ciomas,<br>Bogor</p>
+    </div>
+    <div class="about-card">
+      <p class="about-card-label">Peran</p>
+      <p class="about-card-value">Designer &<br>Illustrator</p>
+    </div>
+  </div>
+</section>
+ 
+<div class="section-divider"></div>
+ 
+<!-- SKILLS -->
+<section id="skills">
+  <p class="section-tag reveal">02 — Software Skills</p>
+  <h2 class="section-heading reveal">TOOLS<br>& SOFTWARE</h2>
+  <div class="skills-grid">
+    <div class="skill-cell reveal">
+      <span class="skill-icon">◈</span>
+      <p class="skill-name">Affinity Designer</p>
+      <p class="skill-desc">Vector design profesional dengan performa tinggi untuk ilustrasi, layout, dan aset UI yang presisi.</p>
+    </div>
+    <div class="skill-cell reveal">
+      <span class="skill-icon">◉</span>
+      <p class="skill-name">Adobe Illustrator</p>
+      <p class="skill-desc">Industry-standard untuk pembuatan grafis vektor, tipografi kreatif, dan identitas visual yang skalabel.</p>
+    </div>
+    <div class="skill-cell reveal">
+      <span class="skill-icon">▣</span>
+      <p class="skill-name">Adobe Photoshop</p>
+      <p class="skill-desc">Manipulasi foto, kompositing digital, dan retouching tingkat lanjut untuk hasil visual yang sinematik.</p>
+    </div>
+  </div>
+</section>
+ 
+<!-- EXPERTISE -->
+<section id="expertise">
+  <p class="section-tag reveal">03 — Areas of Expertise</p>
+  <h2 class="section-heading reveal">APA YANG<br>SAYA BUAT</h2>
+  <div class="expertise-list reveal">
+    <div class="expertise-item">
+      <span class="exp-num">001</span>
+      <span class="exp-title">Minimalist Poster Design</span>
+      <span class="exp-arrow">→</span>
+    </div>
+    <div class="expertise-item">
+      <span class="exp-num">002</span>
+      <span class="exp-title">Modern Poster Design</span>
+      <span class="exp-arrow">→</span>
+    </div>
+    <div class="expertise-item">
+      <span class="exp-num">003</span>
+      <span class="exp-title">Character Illustration</span>
+      <span class="exp-arrow">→</span>
+    </div>
+    <div class="expertise-item">
+      <span class="exp-num">004</span>
+      <span class="exp-title">Visual Identity & Branding</span>
+      <span class="exp-arrow">→</span>
+    </div>
+    <div class="expertise-item">
+      <span class="exp-num">005</span>
+      <span class="exp-title">Digital Art & Composition</span>
+      <span class="exp-arrow">→</span>
+    </div>
+  </div>
+</section>
+ 
+<div class="section-divider"></div>
+ 
+<!-- PORTFOLIO -->
+<section id="portfolio">
+  <div class="portfolio-header reveal">
+    <div>
+      <p class="section-tag">04 — Portfolio</p>
+      <h2 class="section-heading" style="margin-bottom:0;">SELECTED<br>WORKS</h2>
+    </div>
+    <a href="#contact" class="portfolio-link">Hubungi untuk kolaborasi →</a>
+  </div>
+  <div class="portfolio-grid">
+    <div class="portfolio-card reveal">
+      <div class="portfolio-card-bg">◈</div>
+      <p class="pc-tag">Poster Design</p>
+      <p class="pc-title">Minimalist Event Poster</p>
+      <p class="pc-desc">Desain poster clean dengan hierarki tipografi yang kuat dan ruang negatif yang terukur.</p>
+    </div>
+    <div class="portfolio-card reveal">
+      <div class="portfolio-card-bg">◉</div>
+      <p class="pc-tag">Illustration</p>
+      <p class="pc-title">Character Series</p>
+      <p class="pc-desc">Ilustrasi karakter orisinal dengan gaya yang unik, ekspresif, dan storytelling visual yang kuat.</p>
+    </div>
+    <div class="portfolio-card reveal">
+      <div class="portfolio-card-bg">▣</div>
+      <p class="pc-tag">Branding</p>
+      <p class="pc-title">Visual Identity Concept</p>
+      <p class="pc-desc">Konsep identitas visual yang kohesif — logo, palet warna, dan panduan tipografi.</p>
+    </div>
+    <div class="portfolio-card reveal" style="grid-column: span 2; min-height: 220px;">
+      <div class="portfolio-card-bg" style="font-size:9rem;">◐</div>
+      <p class="pc-tag">Digital Art</p>
+      <p class="pc-title">Dark Modern Composition</p>
+      <p class="pc-desc">Karya digital art dengan mood gelap dan sinematik — mengeksplorasi tekstur, cahaya, dan bentuk.</p>
+    </div>
+    <div class="portfolio-card reveal">
+      <div class="portfolio-card-bg">◑</div>
+      <p class="pc-tag">Typography</p>
+      <p class="pc-title">Type Exploration</p>
+      <p class="pc-desc">Eksplorasi tipografi sebagai elemen visual utama dalam komposisi poster modern.</p>
+    </div>
+  </div>
+</section>
+ 
+<!-- CONTACT -->
+<section id="contact">
+  <p class="section-tag reveal">05 — Contact</p>
+  <div class="contact-inner">
+    <div class="reveal">
+      <h2 class="section-heading">MARI<br>BERKARYA</h2>
+      <p class="contact-text">
+        Tertarik untuk berkolaborasi, atau ingin melihat karya saya lebih lanjut? Jangan ragu untuk menghubungi — saya selalu terbuka untuk proyek dan kesempatan baru.
+      </p>
+      <div class="contact-info">
+        <div class="ci-row">
+          <span class="ci-label">Lokasi</span>
+          <span class="ci-value">Padasuka Ciomas, Bogor, Jawa Barat</span>
+        </div>
+        <div class="ci-row">
+          <span class="ci-label">Institusi</span>
+          <span class="ci-value">SMK TI BAZMA Bogor</span>
+        </div>
+        <div class="ci-row">
+          <span class="ci-label">Spesialisasi</span>
+          <span class="ci-value">Poster Design · Character Illustration</span>
+        </div>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="contact-form">
+        <div class="form-group">
+          <label class="form-label">Nama Lengkap</label>
+          <input class="form-input" type="text" placeholder="Nama mu...">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input class="form-input" type="email" placeholder="nama@email.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Pesan</label>
+          <textarea class="form-textarea" placeholder="Ceritakan tentang proyek Anda..."></textarea>
+        </div>
+        <button class="btn-send" onclick="alert('Pesan terkirim! Terima kasih.')">Kirim Pesan →</button>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<!-- FOOTER -->
+<footer>
+  <p class="footer-copy">© 2025 Muhammad Taqy Abdurrahman Khirom. All rights reserved.</p>
+  <p class="footer-logo">MT.</p>
+  <p class="footer-copy">Bogor · SMK TI BAZMA</p>
+</footer>
+ 
+<script>
+  // Custom Cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  function animateCursor() {
+    cursor.style.left = mx + 'px';
+    cursor.style.top = my + 'px';
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
+ 
+  // Scroll Reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => obs.observe(el));
+ 
+  // Nav active state
+  window.addEventListener('scroll', () => {
+    const nav = document.querySelector('nav');
+    nav.style.background = window.scrollY > 60
+      ? 'rgba(5,5,5,0.92)' : 'transparent';
+    nav.style.backdropFilter = window.scrollY > 60 ? 'blur(20px)' : 'none';
+    nav.style.transition = 'background 0.4s, backdrop-filter 0.4s';
+  });
+ 
+  // Expertise hover glow
+  document.querySelectorAll('.expertise-item').forEach(item => {
+    item.addEventListener('mouseenter', () => {
+      document.querySelectorAll('.expertise-item').forEach(i => {
+        if (i !== item) i.style.opacity = '0.35';
+      });
+    });
+    item.addEventListener('mouseleave', () => {
+      document.querySelectorAll('.expertise-item').forEach(i => i.style.opacity = '1');
+    });
+  });
+</script>
+</body>
+</html>
